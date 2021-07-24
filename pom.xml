@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.gihub.zzw6776</groupId>
+    <groupId>com.github.zzw6776</groupId>
     <artifactId>http-forward-filter</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
@@ -29,7 +29,7 @@
         <dependencies>
             <dependency>
                 <artifactId>http-forward-filter-spring-boot-start</artifactId>
-                <groupId>com.gihub.zzw6776</groupId>
+                <groupId>com.github.zzw6776</groupId>
                 <version>1.0.0</version>
             </dependency>
 
