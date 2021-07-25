@@ -17,6 +17,7 @@ import org.apache.http.message.HeaderGroup;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 
@@ -38,6 +39,7 @@ import java.util.stream.Collectors;
  */
 @Log4j2
 @Component
+@ConditionalOnProperty(value = "httpForward.switch", havingValue = "true")
 public class HttpForwardFilter implements Filter {
 
 
@@ -112,7 +114,8 @@ public class HttpForwardFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) {
-        log.info("init {}", this.getClass().getSimpleName());
+        log.info("init HttpForwardFilter");
+
         httpRequestConfig = RequestConfig.custom()
                 .setRedirectsEnabled(doHandleRedirects)
                 .setCookieSpec(CookieSpecs.IGNORE_COOKIES) // we handle them in the servlet instead
@@ -130,7 +133,7 @@ public class HttpForwardFilter implements Filter {
 
     @Override
     public void destroy() {
-        log.info("destroy {}", this.getClass().getSimpleName());
+        log.info("destroy HttpForwardFilter");
     }
 
 
