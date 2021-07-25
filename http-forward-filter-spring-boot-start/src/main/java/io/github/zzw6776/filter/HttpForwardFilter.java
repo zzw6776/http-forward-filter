@@ -18,7 +18,6 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.stereotype.Component;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 
 import javax.servlet.*;
@@ -38,7 +37,6 @@ import java.util.stream.Collectors;
  * @author ZZW
  */
 @Log4j2
-@Component
 @ConditionalOnProperty(value = "httpForward.switch", havingValue = "true")
 public class HttpForwardFilter implements Filter {
 

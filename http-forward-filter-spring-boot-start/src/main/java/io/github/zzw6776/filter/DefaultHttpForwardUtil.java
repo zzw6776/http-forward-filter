@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.context.annotation.Configuration;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -19,7 +18,6 @@ import java.util.Map;
  */
 
 @Log4j2
-@Configuration
 @AutoConfigureAfter(value = HttpForwardFilter.class)
 @ConditionalOnBean(HttpForwardFilter.class)
 @ConditionalOnMissingBean(IHttpForwardUtil.class)
