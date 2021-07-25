@@ -1,3 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.github.zzw6776.filter.HttpForwardFilter,\
-  com.github.zzw6776.filter.DefaultHttpForwardUtil
+  io.github.zzw6776.filter.HttpForwardFilter,\
+  io.github.zzw6776.filter.DefaultHttpForwardUtil

@@ -1,4 +1,4 @@
-package com.github.zzw6776.filter;
+package io.github.zzw6776.filter;
 
 import lombok.extern.log4j.Log4j2;
 import org.apache.http.*;
@@ -34,9 +34,7 @@ import java.util.stream.Collectors;
 
 /**
  * 请求转发Filter
- *
- * @author zhangzhengwei/wangzhenqiang
- * @date 2021/07/06
+ * @author ZZW
  */
 @Log4j2
 @Component

@@ -1,4 +1,4 @@
-package com.github.zzw6776.filter;
+package io.github.zzw6776.filter;
 
 import lombok.extern.log4j.Log4j2;
 import org.apache.http.Header;
@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author ZZW
+ */
 @Component
 @Log4j2
 public class DefaultHttpForwardUtil {

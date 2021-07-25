@@ -1,8 +1,11 @@
-package com.github.zzw6776.sample;
+package io.github.zzw6776.sample;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * @author ZZW
+ */
 @SpringBootApplication
 public class DemoApplication8081 {
 

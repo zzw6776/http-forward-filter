@@ -1,11 +1,12 @@
-package com.github.zzw6776.sample;
+package io.github.zzw6776.sample;
 
-import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * @author ZZW
+ */
 @RestController
 @Log4j2
 public class DemoController {

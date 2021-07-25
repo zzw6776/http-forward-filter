@@ -1,13 +1,14 @@
-package com.github.zzw6776.filter;
+package io.github.zzw6776.filter;
 
 import org.apache.http.Header;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * @author ZZW
+ */
 public interface IHttpForwardUtil {
 
     public URI getTargetUri();
