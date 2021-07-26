@@ -4,6 +4,9 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @author ZZW
  */
@@ -19,7 +22,8 @@ public class DemoController {
      */
     @RequestMapping("/testRequestParam")
     @ResponseBody
-    public String testRequestParam(@RequestParam("param") String param) {
+    public String testRequestParam(@RequestParam("param") String param, HttpServletResponse response) {
+        response.addCookie(new Cookie("123","123"));
         log.info(param);
         return param;
     }

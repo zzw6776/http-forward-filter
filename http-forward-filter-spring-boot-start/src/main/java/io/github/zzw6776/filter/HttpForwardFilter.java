@@ -71,9 +71,11 @@ public class HttpForwardFilter implements Filter {
      * 是否保存cookie
      * 若为true会保存转发后的cookie
      */
-    @Value("${httpForward.doPreserveCookies:false}")
+    @Value("${httpForward.doPreserveCookies:true}")
     public boolean doPreserveCookies ;
-
+    /**
+     * 为转发请求设置header: X-Forwarded-Proto
+     */
     @Value("${httpForward.doForwardIP:true}")
     public boolean doForwardIP ;
 
