@@ -1,6 +1,7 @@
-# http-forward-filter
+
 # http-forward-filter用法
 
+> 部分代码参考https://github.com/mitre/HTTP-Proxy-Servlet
 
 项目默认不会进行循环转发,如在targetUri为自身的情况下,只会转发一次到自身
 
