@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 
 /**
  * 请求转发Filter
+ *
  * @author ZZW
  */
 @Log4j2
@@ -45,16 +46,16 @@ public class HttpForwardFilter implements Filter {
      * httpclient参数
      */
     @Value("${httpForward.httpclient.doHandleRedirects:false}")
-    public boolean doHandleRedirects ;
+    public boolean doHandleRedirects;
     @Value("${httpForward.httpclient.connectTimeout:-1}")
-    public int connectTimeout ;
+    public int connectTimeout;
     @Value("${httpForward.httpclient.readTimeout:-1}")
-    public int readTimeout ;
+    public int readTimeout;
     @Value("${httpForward.httpclient.connectionRequestTimeout:-1}")
-    public int connectionRequestTimeout ;
+    public int connectionRequestTimeout;
 
     @Value("${httpForward.httpclient.maxConnections:-1}")
-    public int maxConnections ;
+    public int maxConnections;
 
     /**
      * 是否转发#号后面参数
@@ -72,12 +73,12 @@ public class HttpForwardFilter implements Filter {
      * 若为true会保存转发后的cookie
      */
     @Value("${httpForward.doPreserveCookies:true}")
-    public boolean doPreserveCookies ;
+    public boolean doPreserveCookies;
     /**
      * 为转发请求设置header: X-Forwarded-Proto
      */
     @Value("${httpForward.doForwardIP:true}")
-    public boolean doForwardIP ;
+    public boolean doForwardIP;
 
 
     String forHeaderName = "X-Forwarded-For";
@@ -182,7 +183,7 @@ public class HttpForwardFilter implements Filter {
             return;
         }
 
-        Boolean isForward = httpForwardUtil.isForward(scheme, serverName, serverPort,uri,headersInfo,method, contentType);
+        Boolean isForward = httpForwardUtil.isForward(scheme, serverName, serverPort, uri, headersInfo, method, contentType);
 
         if (!isForward) {
             chain.doFilter(reusableHttpServletRequest, response);
@@ -190,12 +191,12 @@ public class HttpForwardFilter implements Filter {
         }
 
         URI targetUri = httpForwardUtil.getTargetUri();
-
+        HttpRequest forwardRequest = null;
         try {
             // 因为不确定是否真的兼容，所以不传输协议版本
             String forwardToUri = rewriteUrlFromRequest(reusableHttpServletRequest,targetUri);
             // 初始化一个转发请求对象HttpRequest
-            HttpRequest forwardRequest = initForwardRequest(reusableHttpServletRequest, forwardToUri);
+            forwardRequest = initForwardRequest(reusableHttpServletRequest, forwardToUri);
             // 拷贝header
             copyHeaders(reusableHttpServletRequest, forwardRequest);
 
@@ -234,17 +235,21 @@ public class HttpForwardFilter implements Filter {
                 }
             }
 
-        }finally {
-         // 解析request中的参数
+        } finally {
+            // 解析request中的参数
             //form-date的不能获取body里的参数
-        String body = new String(reusableHttpServletRequest.getContentAsByteArray());
-        log.info("是否转发:[{}], Method:[{}], URI:[{}], toService:[{}], query:[{}], body:[{}], headers:[{}]", isForward,  method, uri , targetUri.getHost(), queryString, body, headersInfo.toString() );
-
+            String body = new String(reusableHttpServletRequest.getContentAsByteArray());
+            Header[] allHeaders = forwardRequest.getAllHeaders();
+            HashMap<String, String> headerMap = new HashMap<>();
+            for (Header header : allHeaders) {
+                headerMap.put(header.getName(), header.getValue());
+            }
+            log.info("已转发, Method:[{}], URI:[{}], toTargetUrI:[{}], body:[{}], headers:[{}]", method, uri, forwardRequest.getRequestLine().getUri(), body, headerMap.toString());
         }
 
     }
 
-    private void addCustomerHeader(HttpRequest forwardRequest,List<Header> customerHeaders) {
+    private void addCustomerHeader(HttpRequest forwardRequest, List<Header> customerHeaders) {
         for (Header customerHeader : customerHeaders) {
             forwardRequest.addHeader(customerHeader);
         }
@@ -300,7 +305,7 @@ public class HttpForwardFilter implements Filter {
      * @param servletResponse
      * @throws IOException
      */
-    private  void copyResponseHeaders(HttpResponse proxyResponse, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
+    private void copyResponseHeaders(HttpResponse proxyResponse, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
         for (Header header : proxyResponse.getAllHeaders()) {
             copyResponseHeader(servletRequest, servletResponse, header);
         }
@@ -313,8 +318,8 @@ public class HttpForwardFilter implements Filter {
      * @param servletResponse
      * @param header
      */
-    private  void copyResponseHeader(HttpServletRequest servletRequest,
-                                           HttpServletResponse servletResponse, Header header) {
+    private void copyResponseHeader(HttpServletRequest servletRequest,
+                                    HttpServletResponse servletResponse, Header header) {
         String headerName = header.getName();
         if (hopByHopHeaders.containsHeader(headerName))
             return;
@@ -371,7 +376,7 @@ public class HttpForwardFilter implements Filter {
      * @param servletResponse
      * @param headerValue
      */
-    private  void copyProxyCookie(HttpServletRequest servletRequest, HttpServletResponse servletResponse, String headerValue) {
+    private void copyProxyCookie(HttpServletRequest servletRequest, HttpServletResponse servletResponse, String headerValue) {
         //build path for resulting cookie
         String path = servletRequest.getContextPath(); // path starts with / or is empty string
         path += servletRequest.getServletPath(); // servlet path starts with / or is empty string
@@ -392,13 +397,14 @@ public class HttpForwardFilter implements Filter {
             servletResponse.addCookie(servletCookie);
         }
     }
+
     /**
      * 为转发请求设置header: X-Forwarded-Proto
      *
      * @param servletRequest
      * @param forwardRequest
      */
-    private  void setXForwardedForHeader(HttpServletRequest servletRequest, HttpRequest forwardRequest) {
+    private void setXForwardedForHeader(HttpServletRequest servletRequest, HttpRequest forwardRequest) {
         if (doForwardIP) {
 
             String forHeader = servletRequest.getRemoteAddr();
@@ -424,19 +430,21 @@ public class HttpForwardFilter implements Filter {
             hopByHopHeaders.addHeader(new BasicHeader(header, null));
         }
     }
+
     /**
      * 拷贝请求Request中的header
      *
      * @param servletRequest
      * @param proxyRequest
      */
-    private void copyHeaders(HttpServletRequest servletRequest, HttpRequest proxyRequest)  {
+    private void copyHeaders(HttpServletRequest servletRequest, HttpRequest proxyRequest) {
         Enumeration<String> enumerationOfHeaderNames = servletRequest.getHeaderNames();
         while (enumerationOfHeaderNames.hasMoreElements()) {
             String headerName = enumerationOfHeaderNames.nextElement();
             copyRequestHeader(servletRequest, proxyRequest, headerName);
         }
     }
+
     /**
      * 拷贝Request中的header
      *
@@ -444,7 +452,7 @@ public class HttpForwardFilter implements Filter {
      * @param proxyRequest
      * @param headerName
      */
-    private void copyRequestHeader(HttpServletRequest servletRequest, HttpRequest proxyRequest, String headerName)  {
+    private void copyRequestHeader(HttpServletRequest servletRequest, HttpRequest proxyRequest, String headerName) {
         //Instead the content-length is effectively set via InputStreamEntity
         if (headerName.equalsIgnoreCase(HttpHeaders.CONTENT_LENGTH))
             return;
@@ -461,7 +469,7 @@ public class HttpForwardFilter implements Filter {
                 try {
                     uri = new URI(proxyRequest.getRequestLine().getUri());
                 } catch (URISyntaxException e) {
-                    log.error("uri创建失败",e);
+                    log.error("uri创建失败", e);
                     throw new RuntimeException(e);
                 }
                 HttpHost host = URIUtils.extractHost(uri);
@@ -497,6 +505,7 @@ public class HttpForwardFilter implements Filter {
         }
         return escapedCookie.toString();
     }
+
     /**
      * 初始化一个转发请求
      *
@@ -521,7 +530,7 @@ public class HttpForwardFilter implements Filter {
     }
 
 
-    private  String rewriteUrlFromRequest(HttpServletRequest servletRequest,URI targetUri) {
+    private String rewriteUrlFromRequest(HttpServletRequest servletRequest, URI targetUri) {
         StringBuilder uri = new StringBuilder(500);
         uri.append(targetUri);
         // Handle the path given to the servlet
@@ -557,9 +566,6 @@ public class HttpForwardFilter implements Filter {
     }
 
 
-
-
-
     private static CharSequence encodeUriQuery(CharSequence in, boolean encodePercent) {
         //Note that I can't simply use URI.java to encode because it will escape pre-existing escaped things.
         StringBuilder outBuf = null;
@@ -590,7 +596,6 @@ public class HttpForwardFilter implements Filter {
         }
         return outBuf != null ? outBuf : in;
     }
-
 
 
 }
