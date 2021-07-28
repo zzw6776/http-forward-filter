@@ -161,6 +161,7 @@ httpForward.switch=true
 
 
 实现接口IHttpForwardUtil,并注入spring容器,例子如下
+> isForward方法入参没有body的原因是因为如果要获取body那么无论要不要转发都需要对inputStream做一层缓存,有点浪费资源
 
 ```Java
 @Component
@@ -189,10 +190,11 @@ public class CustomerHttpForwardUtil implements IHttpForwardUtil {
      * @param headers header
      * @param method 网络协议(get/post..)
      * @param contentType contentType
+     * @param queryString queryString
      * @return
      */
     @Override
-    public Boolean isForward(String Scheme, String domain, Integer port, String uri, Map<String, String> headers, String method, String contentType) {
+    public Boolean isForward(String Scheme, String domain, Integer port, String uri, Map<String, String> headers, String method, String contentType,String queryString) {
         return null;
     }
 

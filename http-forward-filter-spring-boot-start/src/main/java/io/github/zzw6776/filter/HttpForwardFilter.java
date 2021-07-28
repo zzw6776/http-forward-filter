@@ -183,7 +183,7 @@ public class HttpForwardFilter implements Filter {
             return;
         }
 
-        Boolean isForward = httpForwardUtil.isForward(scheme, serverName, serverPort, uri, headersInfo, method, contentType);
+        Boolean isForward = httpForwardUtil.isForward(scheme, serverName, serverPort, uri, headersInfo, method, contentType,queryString);
 
         if (!isForward) {
             chain.doFilter(reusableHttpServletRequest, response);

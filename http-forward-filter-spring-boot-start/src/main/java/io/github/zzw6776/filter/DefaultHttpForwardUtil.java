@@ -41,7 +41,7 @@ public class DefaultHttpForwardUtil implements IHttpForwardUtil{
     }
 
     @Override
-    public Boolean isForward(String Scheme, String domain, Integer port, String uri, Map<String, String> headers, String method, String contentType) {
+    public Boolean isForward(String Scheme, String domain, Integer port, String uri, Map<String, String> headers, String method, String contentType,String queryString) {
 
         return true;
     }

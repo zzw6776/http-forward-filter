@@ -26,9 +26,10 @@ public interface IHttpForwardUtil {
      * @param headers header
      * @param method 网络协议(get/post..)
      * @param contentType contentType
+     * @param queryString queryString
      * @return
      */
-    public Boolean isForward(String Scheme, String domain, Integer port, String uri, Map<String, String> headers, String method, String contentType);
+    public Boolean isForward(String Scheme, String domain, Integer port, String uri, Map<String, String> headers, String method, String contentType,String queryString);
 
     /**
      * 需要自定义的header
