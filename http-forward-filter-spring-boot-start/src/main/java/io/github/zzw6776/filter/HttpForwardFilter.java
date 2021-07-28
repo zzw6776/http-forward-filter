@@ -191,6 +191,10 @@ public class HttpForwardFilter implements Filter {
         }
 
         URI targetUri = httpForwardUtil.getTargetUri();
+        if (null == targetUri) {
+            chain.doFilter(reusableHttpServletRequest, response);
+            return;
+        }
         HttpRequest forwardRequest = null;
         try {
             // 因为不确定是否真的兼容，所以不传输协议版本
