@@ -116,7 +116,7 @@ public class ScoreHttpForwardUtil implements IHttpForwardUtil {
 
 #### 基础用法
 
-目前只支持spring-boot/spring-cloud
+目前只支持spring-boot/spring-cloud,标准的spring有人反馈再支持吧
 
 引入jar包
 
