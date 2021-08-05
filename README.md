@@ -124,7 +124,7 @@ public class ScoreHttpForwardUtil implements IHttpForwardUtil {
 <dependency>
   <groupId>io.github.zzw6776</groupId>
   <artifactId>http-forward-filter-spring-boot-start</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
 </dependency>
 ```
 
@@ -148,7 +148,7 @@ httpForward.targetUri=http://127.0.0.1:8081
 <dependency>
   <groupId>io.github.zzw6776</groupId>
   <artifactId>http-forward-filter-spring-boot-start</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
 </dependency>
 ```
 

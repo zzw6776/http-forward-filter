@@ -7,7 +7,7 @@
     <groupId>io.github.zzw6776</groupId>
     <artifactId>http-forward-filter</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <modules>
         <module>http-forward-filter-spring-boot-start</module>
         <module>http-forward-filter-samples</module>
@@ -64,7 +64,7 @@
             <dependency>
                 <artifactId>http-forward-filter-spring-boot-start</artifactId>
                 <groupId>io.github.zzw6776</groupId>
-                <version>1.0.1</version>
+                <version>1.0.2</version>
             </dependency>
 
             <dependency>
